@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		FEEC5B692CDCE123002BFD8D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = FEEC5B682CDCE123002BFD8D /* RealityKitContent */; };
 		FEEC5B862CDCE17E002BFD8D /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEEC5B852CDCE17E002BFD8D /* ARKit.framework */; };
+		FEEC5C6A2CDCE603002BFD8D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = FEEC5C692CDCE5FC002BFD8D /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		FEEC5B632CDCE123002BFD8D /* Noir.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noir.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEEC5B672CDCE123002BFD8D /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		FEEC5B852CDCE17E002BFD8D /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		FEEC5C692CDCE5FC002BFD8D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -54,6 +56,7 @@
 		FEEC5B5A2CDCE123002BFD8D = {
 			isa = PBXGroup;
 			children = (
+				FEEC5C692CDCE5FC002BFD8D /* .gitignore */,
 				FEEC5B652CDCE123002BFD8D /* Noir */,
 				FEEC5B662CDCE123002BFD8D /* Packages */,
 				FEEC5B842CDCE17E002BFD8D /* Frameworks */,
@@ -150,6 +153,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEEC5C6A2CDCE603002BFD8D /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
