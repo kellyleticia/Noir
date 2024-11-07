@@ -11,13 +11,18 @@ import RealityKit
 struct ContentView: View {
 
     var body: some View {
-        VStack {
-            ToggleImmersiveSpaceButton()
+        RealityView { content in
+            let model = await try! ModelEntity(named: "fenix")
+            model.transform.scale = SIMD3<Float>(0.001, 0.001, 0.001)
+            if let animation = model.availableAnimations.first {
+                model.playAnimation(animation.repeat())
+            }
+            content.add(model)
         }
     }
 }
 
-#Preview(windowStyle: .automatic) {
+#Preview(windowStyle: .volumetric) {
     ContentView()
         .environment(AppModel())
 }
