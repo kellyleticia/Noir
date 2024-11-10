@@ -15,12 +15,14 @@ struct NoirApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if avPlayerViewModel.isPlaying {
-                AVPlayerView(viewModel: avPlayerViewModel)
-            } else {
-                ContentView()
-                    .environment(appModel)
-            }
+//            if avPlayerViewModel.isPlaying {
+//                AVPlayerView(viewModel: avPlayerViewModel)
+//            } else {
+//                ContentView()
+//                    .environment(appModel)
+//            }
+            WordSearchGridWindow()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {

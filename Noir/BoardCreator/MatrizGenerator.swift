@@ -13,7 +13,7 @@ class MatrizGenerator {
     var theme: String = ""
     var themeWords: [String] = []
     var words: [Word] = []
-    private var chosenWords: [String] = []
+    var chosenWords: [String] = []
     var generatedGrid: [[String]] = []
     
     ///Creates the grid that will arrange the words in the word search puzzle and the random letters in the empty spaces.
