@@ -83,7 +83,7 @@ struct WordSearchView: View {
             ForEach(0..<boardSize, id: \.self) { row in
                 HStack(spacing: 2) {
                     ForEach(0..<boardSize, id: \.self) { col in
-                        Text(grid[row][col].letter) 
+                        Text(grid[row][col].letter)
                             .font(.title)
                             .frame(width: 50, height: 50)                              .background(highlightedWords.contains(grid[row][col].letter) ? Color.random : Color.gray)
                             .cornerRadius(5)
