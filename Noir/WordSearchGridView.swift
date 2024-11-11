@@ -10,20 +10,15 @@ struct WordSearchGridWindow: View {
         matrizGenerator.theme = "Animals"
         matrizGenerator.themeWords = [
             "cat", "dog", "elephant", "tiger", "lion", "zebra", "giraffe",
-            "monkey","panda", "bird", "horse", "parrot", "rat", "turtle",
-            "rabbit", "dolphin","fish", "shark", "owl", "otter", "seal",
-            "camel", "kangaroo", "penguin","crocodile", "fox", "bear", "wolf",
+            "monkey", "panda", "bird", "horse", "parrot", "rat", "turtle",
+            "rabbit", "dolphin", "fish", "shark", "owl", "otter", "seal",
+            "camel", "kangaroo", "penguin", "crocodile", "fox", "bear", "wolf",
             "butterfly", "bee", "monkey"
         ]
         matrizGenerator.generateGrid()
     }
 
     var body: some View {
-        RealityViewWindow()
-            .frame(width: 400, height: 400)
-    }
-
-    private func RealityViewWindow() -> some View {
         RealityView { content in
             let gridAnchor = AnchorEntity(world: [0, 0, -1])
 
@@ -40,6 +35,7 @@ struct WordSearchGridWindow: View {
             }
             content.add(gridAnchor)
         }
+        .frame(width: 400, height: 400)
     }
 
     // Cria as letras como entidades de modelo
@@ -53,3 +49,4 @@ struct WordSearchGridWindow: View {
 #Preview(windowStyle: .automatic) {
     WordSearchGridWindow()
 }
+

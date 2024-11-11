@@ -18,19 +18,6 @@ struct NoirApp: App {
             WordSearchGridWindow()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-
-        ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            ImmersiveView()
-                .environment(appModel)
-                .onAppear {
-                    appModel.immersiveSpaceState = .open
-                    avPlayerViewModel.play()
-                }
-                .onDisappear {
-                    appModel.immersiveSpaceState = .closed
-                    avPlayerViewModel.reset()
-                }
-        }
         .immersionStyle(selection: .constant(.progressive), in: .progressive)
     }
 }
