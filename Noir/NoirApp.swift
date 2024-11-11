@@ -9,15 +9,9 @@ import SwiftUI
 
 @main
 struct NoirApp: App {
-
-    @State private var appModel = AppModel()
-    @State private var avPlayerViewModel = AVPlayerViewModel()
-
     var body: some Scene {
         WindowGroup {
             WordSearchGridWindow()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .immersionStyle(selection: .constant(.progressive), in: .progressive)
     }
 }
