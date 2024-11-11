@@ -50,6 +50,6 @@ struct WordSearchGridWindow: View {
     }
 }
 
-#Preview {
+#Preview(windowStyle: .automatic) {
     WordSearchGridWindow()
 }
