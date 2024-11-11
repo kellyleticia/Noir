@@ -18,6 +18,9 @@ struct NoirApp: App {
             WordSearchGridWindow()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .defaultSize(width: .infinity, height: .infinity)
+        .windowResizability(.contentSize)
+//        .windowStyle(.plain)
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             ImmersiveView()
