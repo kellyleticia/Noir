@@ -4,7 +4,7 @@ import RealityKit
 // Estrutura para exibir o grid em uma janela
 struct WordSearchGridWindow: View {
     let matrizGenerator = MatrizGenerator()
-    
+
     init() {
         matrizGenerator.boardSize = 10
         matrizGenerator.theme = "Animals"
@@ -63,6 +63,7 @@ struct WordSearchView: View {
     @State private var grid: [[LetterCell]]
     let boardSize: Int
     let matrizGenerator: MatrizGenerator
+    @State private var highlightedWords: Set<String> = []
 
     init(boardSize: Int, matrizGenerator: MatrizGenerator) {
         self.boardSize = boardSize
@@ -78,19 +79,29 @@ struct WordSearchView: View {
                 var letter = matrizGenerator.words.randomElement()
                 letter?.wasFound = true
             }
-            
+
             ForEach(0..<boardSize, id: \.self) { row in
                 HStack(spacing: 2) {
                     ForEach(0..<boardSize, id: \.self) { col in
-                        Text(grid[row][col].letter)
+                        Text(grid[row][col].letter) 
                             .font(.title)
-                            .frame(width: 50, height: 50)
-                            .background(grid[row][col].isHighlighted ? Color.green : Color.gray)
+                            .frame(width: 50, height: 50)                              .background(highlightedWords.contains(grid[row][col].letter) ? Color.random : Color.gray)
                             .cornerRadius(5)
                             .padding(4)
                             .foregroundColor(.white)
-                            .font(.system(size: 22, weight: .bold))  
+                            .font(.system(size: 22, weight: .bold))
                             .shadow(radius: 1)
+                            .gesture(DragGesture()
+                                .onChanged { value in
+                                    let touchedLetter = grid[row][col].letter
+                                    if matrizGenerator.verifycaWords(triedWord: touchedLetter) {
+                                        highlightedWords.insert(touchedLetter)
+                                    }
+                                }
+                                .onEnded { _ in
+                                    highlightedWords.removeAll()
+                                }
+                            )
                     }
                 }
             }
@@ -121,8 +132,14 @@ struct WordSearchView: View {
     }
 }
 
-
 struct LetterCell {
     let letter: String
     var isHighlighted: Bool = false
+}
+
+extension Color {
+    static var random: Color {
+        let colors: [Color] = [.red, .blue, .green, .purple, .orange, .yellow]
+        return colors.randomElement() ?? .black
+    }
 }
