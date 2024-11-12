@@ -30,20 +30,40 @@ class WordSearchController: ObservableObject {
         })
     }
     
-    func updateGridForFoundWords(words: [Word]) {
-        for word in words where word.wasFound {
+    func showHint() {
+        var letter = self.matrizGenerator.words.randomElement()
+        self.grid[2][2].color = .blue
+    }
+    
+    func revealWord() {
+        let number = Int.random(in: 0...matrizGenerator.words.count - 1)
+        matrizGenerator.words[number].wasFound = true
+        
+        for word in matrizGenerator.words where word.wasFound {
+            print(word.name)
             let (startRow, startCol) = (word.initPosition[0], word.initPosition[1])
             let (endRow, endCol) = (word.lastPosition[0], word.lastPosition[1])
             
             if word.orientation == .horizontal {
                 for col in startCol...endCol {
-                    grid[startRow][col].isHighlighted = true
+                    grid[startRow][col].color = .green
                 }
             } else if word.orientation == .vertical {
                 for row in startRow...endRow {
-                    grid[row][startCol].isHighlighted = true
+                    grid[row][startCol].color = .green
                 }
             }
+        }
+    }
+    
+    func colorForGridItem(row: Int, col: Int) -> Color {
+        switch grid[row][col].color {
+        case .green:
+            return Color.green
+        case .blue:
+            return Color.blue
+        default:
+            return Color.gray
         }
     }
 }
@@ -51,7 +71,8 @@ class WordSearchController: ObservableObject {
 
 struct LetterCell {
     let letter: String
-    var isHighlighted: Bool = false
+    var color: Color = .gray
+
 }
 
 extension Color {

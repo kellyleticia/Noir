@@ -12,10 +12,12 @@ struct WordSearchView: View {
     
     var body: some View {
         VStack(spacing: 2) {
-            Button("Encontre uma palavra") {
-                var letter = controller.matrizGenerator.words.randomElement()
-                controller.grid[2][2].isHighlighted = true
-                letter?.wasFound = true
+            Button("Show a hint") {
+                controller.showHint()
+            }
+            
+            Button("Reveal Word") {
+                controller.revealWord()
             }
             
             ForEach(0..<controller.matrizGenerator.boardSize, id: \.self) { row in
@@ -24,7 +26,7 @@ struct WordSearchView: View {
                         Text(controller.grid[row][col].letter)
                             .font(.title)
                             .frame(width: 50, height: 50)
-                            .background(controller.grid[row][col].isHighlighted ? Color.random : Color.gray)
+                            .background(controller.colorForGridItem(row: row, col: col))
                             .cornerRadius(5)
                             .padding(4)
                             .foregroundColor(.white)
