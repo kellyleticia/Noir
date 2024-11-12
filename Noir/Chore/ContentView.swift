@@ -42,7 +42,6 @@ struct ContentView: View {
         }
         
         .onAppear {
-            model1.availableAnimations.forEach({print($0.name)})
             let definition = model1.availableAnimations[0].definition
             let battle = AnimationView(
                 source: definition,

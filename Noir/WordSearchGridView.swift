@@ -21,36 +21,7 @@ struct WordSearchGridWindow: View {
     var body: some View {
         ZStack {
             WordSearchView(boardSize: matrizGenerator.boardSize, matrizGenerator: matrizGenerator)
-//            RealityViewWindow()
-//                .scaleEffect(0.6)
         }
-//        .offset(x: -330, y: -300)
-    }
-    
-    private func RealityViewWindow() -> some View {
-        RealityView { content in
-            // Preenche o grid com letras da generatedGrid do MatrizGenerator
-            for row in 0..<matrizGenerator.boardSize {
-                for col in 0..<matrizGenerator.boardSize {
-                    let letter = matrizGenerator.generatedGrid[row][col]
-                    let letterEntity = makeLetterEntity(letter: letter)
-                    letterEntity.scale = [0.5, 0.5, 0.5]
-                    letterEntity.position = [
-                        Float(col) * 0.1,
-                        Float(-row) * 0.1,
-                        0
-                    ]
-                    content.add(letterEntity)
-                }
-            }
-        }
-    }
-
-    // Cria as letras como entidades de modelo
-    private func makeLetterEntity(letter: String) -> ModelEntity {
-        let textMesh = MeshResource.generateText(letter, extrusionDepth: 0.02, font: .systemFont(ofSize: 0.1))
-        let material = SimpleMaterial(color: .white, isMetallic: false)
-        return ModelEntity(mesh: textMesh, materials: [material])
     }
 }
 
@@ -107,7 +78,6 @@ struct WordSearchView: View {
             }
         }
         .padding()
-        //.background(Color.white.opacity(0.2))
         .cornerRadius(15)
         .onAppear {
             updateGridForFoundWords(words: matrizGenerator.words)
