@@ -8,7 +8,7 @@
 import SwiftUI
 import RealityKit
 
-final class WordSearchController {
+final class WordSearchController: ObservableObject {
     @Published var matrizGenerator = MatrizGenerator()
     
     init() {
@@ -22,6 +22,11 @@ final class WordSearchController {
             "butterfly", "bee", "monkey"
         ]
         matrizGenerator.generateGrid()
+    }
+    
+    func showHint() {
+        print("hint")
+        matrizGenerator.showHint()
     }
     
     func makeLetterEntity(letter: String) -> ModelEntity {
