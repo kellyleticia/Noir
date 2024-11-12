@@ -12,13 +12,21 @@ struct WordSearchView: View {
     
     var body: some View {
         VStack(spacing: 2) {
-            Button("Show a hint") {
-                controller.showHint()
+            HStack {
+                Button("Reveal Word") {
+                    controller.revealWord()
+                }
+                Spacer()
+                Button {
+                    controller.showHint()
+                } label: {
+                    Image(systemName: "lightbulb.max.fill")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.white)
+                }
             }
-            
-            Button("Reveal Word") {
-                controller.revealWord()
-            }
+            .frame(maxWidth: 600)
+//            .padding(.horizontal, 320)
             
             ForEach(0..<controller.matrizGenerator.boardSize, id: \.self) { row in
                 HStack(spacing: 2) {

@@ -16,10 +16,7 @@ struct NoirApp: App {
     var body: some Scene {
         WindowGroup {
             WordSearchGridWindow()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .defaultSize(width: .infinity, height: .infinity)
-        .windowResizability(.contentSize)
         .windowStyle(.volumetric)
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
