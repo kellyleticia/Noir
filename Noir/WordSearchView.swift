@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WordSearchView: View {
     @EnvironmentObject var controller: WordSearchController
-    
+    @State private var highlightedWords: [String] = []
     var body: some View {
         VStack(spacing: 2) {
             HStack {
@@ -27,6 +27,11 @@ struct WordSearchView: View {
             }
             .frame(maxWidth: 600)
             
+            Button("Show letter") {
+                print(highlightedWords)
+                highlightedWords.removeAll()
+            }
+            
             ForEach(0..<controller.matrizGenerator.boardSize, id: \.self) { row in
                 HStack(spacing: 2) {
                     ForEach(0..<controller.matrizGenerator.boardSize, id: \.self) { col in
@@ -39,6 +44,11 @@ struct WordSearchView: View {
                             .foregroundColor(.white)
                             .font(.system(size: 22, weight: .bold))
                             .shadow(radius: 1)
+                            .onTapGesture {
+                                let touchedLetter = controller.grid[row][col].letter
+                                controller.grid[row][col].color = .pink
+                                highlightedWords.append(touchedLetter)
+                            }
                     }
                 }
             }
