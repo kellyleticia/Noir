@@ -20,6 +20,7 @@ struct NoirApp: App {
         }
         .defaultSize(width: .infinity, height: .infinity)
         .windowResizability(.contentSize)
+        .windowStyle(.volumetric)
 
         ImmersiveSpace(id: appModel.immersiveSpaceID) {
             ImmersiveView()

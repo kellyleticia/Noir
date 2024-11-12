@@ -114,7 +114,3 @@ struct LetterCell {
     var color: Color = .gray
     
 }
-
-extension Color {
-    
-}
