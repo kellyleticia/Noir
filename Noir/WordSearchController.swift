@@ -31,29 +31,38 @@ class WordSearchController: ObservableObject {
     }
     
     func showHint() {
-        var letter = self.matrizGenerator.words.randomElement()
-        self.grid[2][2].color = .blue
+        let unfoundWords = matrizGenerator.words.filter { !$0.wasFound }
+        guard let word = unfoundWords.randomElement() else { return }
+        let wordSize = word.name.count
+        
+        let line = word.initPosition[0]
+        let column = word.initPosition[1]
+        
+        switch word.orientation {
+        case .horizontal:
+            let randomLetter = Int.random(in: 0..<wordSize)
+            grid[line][column + randomLetter].color = .blue
+            
+        case .vertical:
+            let randomLetter = Int.random(in: 0..<wordSize)
+            grid[line + randomLetter][column].color = .blue
+        }
     }
     
     func revealWord() {
-        let number = Int.random(in: 0...matrizGenerator.words.count - 1)
-        matrizGenerator.words[number].wasFound = true
-        
-        for word in matrizGenerator.words where word.wasFound {
-            print(word.name)
-            let (startRow, startCol) = (word.initPosition[0], word.initPosition[1])
-            let (endRow, endCol) = (word.lastPosition[0], word.lastPosition[1])
-            
-            if word.orientation == .horizontal {
-                for col in startCol...endCol {
-                    grid[startRow][col].color = .green
-                }
-            } else if word.orientation == .vertical {
-                for row in startRow...endRow {
-                    grid[row][startCol].color = .green
-                }
-            }
+        let wordsNotFound = matrizGenerator.words.enumerated().filter { !$0.element.wasFound }
+        guard !wordsNotFound.isEmpty else {
+            return
         }
+        
+        let randomChoice = wordsNotFound.randomElement()!
+        let originalIndex = randomChoice.offset
+        var word = matrizGenerator.words[originalIndex]
+        
+        word.wasFound = true
+        matrizGenerator.words[originalIndex] = word
+        
+        gotItRightWord(word: word)
     }
     
     func colorForGridItem(row: Int, col: Int) -> Color {
@@ -62,9 +71,40 @@ class WordSearchController: ObservableObject {
             return Color.green
         case .blue:
             return Color.blue
+        case .red:
+            return Color.red
+        case .purple:
+            return Color.purple
+        case .orange:
+            return Color.orange
+        case .pink:
+            return Color.pink
         default:
             return Color.gray
         }
+    }
+    
+    
+    private func gotItRightWord(word: Word) {
+        let color = randomColor()
+        
+        let (startRow, startCol) = (word.initPosition[0], word.initPosition[1])
+        let (endRow, endCol) = (word.lastPosition[0], word.lastPosition[1])
+        
+        if word.orientation == .horizontal {
+            for col in startCol...endCol {
+                grid[startRow][col].color = color
+            }
+        } else if word.orientation == .vertical {
+            for row in startRow...endRow {
+                grid[row][startCol].color = color
+            }
+        }
+    }
+    
+    private func randomColor() -> Color {
+        let colors: [Color] = [Color.red, Color.blue, Color.green, Color.purple, Color.orange, Color.pink]
+        return colors.randomElement() ?? .black
     }
 }
 
@@ -72,12 +112,9 @@ class WordSearchController: ObservableObject {
 struct LetterCell {
     let letter: String
     var color: Color = .gray
-
+    
 }
 
 extension Color {
-    static var random: Color {
-        let colors: [Color] = [.red, .blue, .green, .purple, .orange, .yellow]
-        return colors.randomElement() ?? .black
-    }
+    
 }
