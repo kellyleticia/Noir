@@ -26,7 +26,6 @@ struct WordSearchView: View {
                 }
             }
             .frame(maxWidth: 600)
-//            .padding(.horizontal, 320)
             
             ForEach(0..<controller.matrizGenerator.boardSize, id: \.self) { row in
                 HStack(spacing: 2) {
