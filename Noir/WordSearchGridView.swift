@@ -1,26 +1,11 @@
 import SwiftUI
 import RealityKit
 
-// Estrutura para exibir o grid em uma janela
 struct WordSearchGridWindow: View {
-    let matrizGenerator = MatrizGenerator()
-
-    init() {
-        matrizGenerator.boardSize = 10
-        matrizGenerator.theme = "Animals"
-        matrizGenerator.themeWords = [
-            "cat", "dog", "elephant", "tiger", "lion", "zebra", "giraffe",
-            "monkey","panda", "bird", "horse", "parrot", "rat", "turtle",
-            "rabbit", "dolphin","fish", "shark", "owl", "otter", "seal",
-            "camel", "kangaroo", "penguin","crocodile", "fox", "bear", "wolf",
-            "butterfly", "bee", "monkey"
-        ]
-        matrizGenerator.generateGrid()
-    }
-
+    @StateObject private var controller = WordSearchController()
     var body: some View {
         ZStack {
-            WordSearchView(boardSize: matrizGenerator.boardSize, matrizGenerator: matrizGenerator)
+            WordSearchView(boardSize: controller.matrizGenerator.boardSize, matrizGenerator: controller.matrizGenerator)
         }
     }
 }
@@ -34,8 +19,7 @@ struct WordSearchView: View {
     @State private var grid: [[LetterCell]]
     let boardSize: Int
     let matrizGenerator: MatrizGenerator
-    @State private var highlightedWords: Set<String> = []
-
+    
     init(boardSize: Int, matrizGenerator: MatrizGenerator) {
         self.boardSize = boardSize
         self.matrizGenerator = matrizGenerator
@@ -43,20 +27,22 @@ struct WordSearchView: View {
             row.map { letter in LetterCell(letter: letter) }
         })
     }
-
+    
     var body: some View {
         VStack(spacing: 2) {
             Button("Encontre uma palavra") {
                 var letter = matrizGenerator.words.randomElement()
+                grid[2][2].isHighlighted = true
                 letter?.wasFound = true
             }
-
+            
             ForEach(0..<boardSize, id: \.self) { row in
                 HStack(spacing: 2) {
                     ForEach(0..<boardSize, id: \.self) { col in
                         Text(grid[row][col].letter)
                             .font(.title)
-                            .frame(width: 50, height: 50)                              .background(highlightedWords.contains(grid[row][col].letter) ? Color.random : Color.gray)
+                            .frame(width: 50, height: 50)
+                            .background(grid[row][col].isHighlighted ? Color.random : Color.gray)
                             .cornerRadius(5)
                             .padding(4)
                             .foregroundColor(.white)
@@ -66,11 +52,8 @@ struct WordSearchView: View {
                                 .onChanged { value in
                                     let touchedLetter = grid[row][col].letter
                                     if matrizGenerator.verifycaWords(triedWord: touchedLetter) {
-                                        highlightedWords.insert(touchedLetter)
+                                        
                                     }
-                                }
-                                .onEnded { _ in
-                                    highlightedWords.removeAll()
                                 }
                             )
                     }
@@ -88,7 +71,7 @@ struct WordSearchView: View {
         for word in words where word.wasFound {
             let (startRow, startCol) = (word.initPosition[0], word.initPosition[1])
             let (endRow, endCol) = (word.lastPosition[0], word.lastPosition[1])
-
+            
             if word.orientation == .horizontal {
                 for col in startCol...endCol {
                     grid[startRow][col].isHighlighted = true
