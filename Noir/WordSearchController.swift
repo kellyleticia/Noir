@@ -10,7 +10,7 @@ import SwiftUI
 class WordSearchController: ObservableObject {
     let matrizGenerator = MatrizGenerator()
     @Published var grid: [[LetterCell]] = []
-    @Published var highlightedWords: [String] = []
+    @Published var highlightedWords: [(letter: String, position: (Int, Int))] = []
     
     init() {
         matrizGenerator.boardSize = 10
@@ -86,15 +86,21 @@ class WordSearchController: ObservableObject {
     }
     
     func confirmChoice() {
-        let string = String(highlightedWords.joined())
-        let index = matrizGenerator.words.firstIndex(where: {$0.name == string})
+        let string = String(highlightedWords.map { $0.letter }.joined())
         
-        var word = matrizGenerator.words[index]
+        if let index = matrizGenerator.words.firstIndex(where: { $0.name == string }) {
+            var word = matrizGenerator.words[index]
+            word.wasFound = true
+            matrizGenerator.words[index] = word
+            gotItRightWord(word: word)
+        } else {
+            for (_, position) in highlightedWords {
+                let (row, col) = position
+                grid[row][col].color = .gray
+            }
+        }
         
-        word.wasFound = true
-        matrizGenerator.words[originalIndex] = word
-        
-        gotItRightWord(word: word)
+        highlightedWords.removeAll() 
     }
     
     private func gotItRightWord(word: Word) {

@@ -27,6 +27,7 @@ struct WordSearchView: View {
             .frame(maxWidth: 600)
             
             Button("Confirm choice") {
+                controller.confirmChoice()
                 print(controller.highlightedWords)
                 controller.highlightedWords.removeAll()
             }
@@ -46,7 +47,7 @@ struct WordSearchView: View {
                             .onTapGesture {
                                 let touchedLetter = controller.grid[row][col].letter
                                 controller.grid[row][col].color = .pink
-                                controller.highlightedWords.append(touchedLetter)
+                                controller.highlightedWords.append((letter: touchedLetter, position: (row, col))) 
                             }
                     }
                 }
