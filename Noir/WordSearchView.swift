@@ -76,14 +76,16 @@ struct WordSearchView: View {
                     }), let point = controller.selectedGrid[frame] {
                         let row = Int(point.x)
                         let col = Int(point.y)
-                        let touchedLetter = controller.grid[row][col].letter
+                        let touchedGrid = controller.grid[row][col]
                         controller.grid[row][col].color = .pink
-                        if controller.highlightedWords.contains(where: {
-                            $0.letter == touchedLetter && $0.position == (row, col)
-                        }) {
-                            return
+                        
+                        let addLetter = controller.highlightedWords.contains(where: {
+                            $0.letter == touchedGrid.letter && $0.position == (row, col)
+                        })
+                        
+                        if addLetter {
+                            controller.highlightedWords.append((letter: touchedGrid.letter, position: (row, col)))
                         }
-                        controller.highlightedWords.append((letter: touchedLetter, position: (row, col)))
                     }
                     
                 }
