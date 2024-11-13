@@ -23,13 +23,30 @@ struct WordSearchView: View {
                 
                 Spacer()
                 
-                Text("Progress: \(controller.matrizGenerator.words.filter { $0.wasFound }.count)/\(controller.matrizGenerator.words.count)")
+                Text("\(controller.matrizGenerator.words.filter { $0.wasFound }.count)/\(controller.matrizGenerator.words.count)")
                     .font(.system(size: 32, weight: .bold))
                     .padding(.trailing, 16)
                     .padding(.bottom, 8)
                     .monospacedDigit()
                 
                 Spacer()
+                
+                Button {
+                    choice = controller.confirmChoice()
+                } label: {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundStyle(
+                            choice == true ? Color.green :
+                            choice == false ? Color.red :
+                            Color.white)
+                }
+                .onChange(of: choice) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        choice = nil
+                    })
+                }
+                .padding(.bottom, 10)
                 
                 Button {
                     controller.showHint()
@@ -70,22 +87,6 @@ struct WordSearchView: View {
                     }
                 }
             }
-            Button {
-                choice = controller.confirmChoice()
-            } label: {
-                Text("Confirm choice")
-                    .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(
-                        choice == true ? Color.green :
-                        choice == false ? Color.red :
-                        Color.white)
-            }
-            .onChange(of: choice) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    choice = nil
-                })
-            }
-            .padding(.top)
         }
         .padding()
         .cornerRadius(15)
@@ -112,30 +113,6 @@ struct WordSearchView: View {
                     
                 }
         )
-//        .overlay {
-//            
-//            ZStack(alignment: .topLeading) {
-//                ForEach(Array(controller.selectedGrid.enumerated()), id: \.offset) { (_, cell) in
-//                    Circle()
-//                        .fill(.green.opacity(0.1))
-//                        .frame(width: 50, height: 50)
-//                        .position(x: cell.key.midX, y: cell.key.midY)
-//                }
-//            }
-//            .allowsHitTesting(false)
-//        }
-//        .overlay {
-//            
-//            ZStack(alignment: .topLeading) {
-//                ForEach(Array(grid2.enumerated()), id: \.offset) { (_, cell) in
-//                    Circle()
-//                        .fill(.red.opacity(0.1))
-//                        .frame(width: 50, height: 50)
-//                        .position(x: cell.value.midX, y: cell.value.midY)
-//                }
-//            }
-//            .allowsHitTesting(false)
-//        }
         
         .onAppear {
             print(controller.selectedGrid.keys.count)
