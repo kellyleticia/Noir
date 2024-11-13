@@ -11,6 +11,8 @@ struct WordSearchView: View {
     @EnvironmentObject var controller: WordSearchController
     @State private var choice: Bool?
     
+    @State private var grid2: [CGPoint: CGRect] = [:]
+    
     var body: some View {
         VStack(spacing: 2) {
             HStack {
@@ -52,20 +54,19 @@ struct WordSearchView: View {
                             .foregroundColor(.white)
                             .font(.system(size: 22, weight: .bold))
                             .shadow(radius: 1)
-//                            .onGeometryChange(
-//                                for: CGRect.self,
-//                                of: { proxy in
-//                                    proxy.frame(in: .global)
-//                                },
-//                                action: { frame in
-//                                    controller.selectedGrid[frame] = CGPoint(x: row, y: col)
-//                                }
-//                            )
-                            .onTapGesture {
-                                let touchedLetter = controller.grid[row][col].letter
-                                controller.grid[row][col].color = .pink
-                                controller.highlightedWords.append((letter: touchedLetter, position: (row, col)))
-                            }
+                            .onGeometryChange(
+                                for: CGRect.self,
+                                of: { proxy in
+                                    proxy.frame(in: .global)
+                                },
+                                action: { frame in
+                                    print("onGeometryChange", row, col)
+                                    if row == 0, col == 0 {
+                                        print(frame)
+                                    }
+                                    grid2[CGPoint(x: row, y: col)] = frame
+                                }
+                            )
                     }
                 }
             }
@@ -88,30 +89,57 @@ struct WordSearchView: View {
         }
         .padding()
         .cornerRadius(15)
-//        .simultaneousGesture(
-//            DragGesture()
-//                .onChanged { value in
-//                    let position = value.location
-//                    if let frame = controller.selectedGrid.keys.first(where: {
-//                        $0.contains(position)
-//                    }), let point = controller.selectedGrid[frame] {
-//                        let row = Int(point.x)
-//                        let col = Int(point.y)
-//                        let touchedGrid = controller.grid[row][col]
-//                        controller.grid[row][col].color = .pink
-//                        print("Valor: \((row,col))")
-//                        
-//                        let addLetter = controller.highlightedWords.contains(where: {
-//                            $0.letter == touchedGrid.letter && $0.position == (row, col)
-//                        })
-//                        
-//                        if !addLetter {
-//                            controller.highlightedWords.append((letter: touchedGrid.letter, position: (row, col)))
-//                        }
-//                    }
-//                    
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { value in
+                    let position = value.location
+                    
+                    guard let point = grid2.first(where: { $0.value.contains(position) })?.key else { return }
+                    
+                    let row = Int(point.x)
+                    let col = Int(point.y)
+                    let touchedGrid = controller.grid[row][col]
+                    controller.grid[row][col].color = .pink
+                    print("Ponto: \(position)", "Valor: \((row,col))")
+                    
+                    let addLetter = controller.highlightedWords.contains(where: {
+                        $0.letter == touchedGrid.letter && $0.position == (row, col)
+                    })
+                    
+                    if !addLetter {
+                        controller.highlightedWords.append((letter: touchedGrid.letter, position: (row, col)))
+                    }
+                    
+                }
+        )
+//        .overlay {
+//            
+//            ZStack(alignment: .topLeading) {
+//                ForEach(Array(controller.selectedGrid.enumerated()), id: \.offset) { (_, cell) in
+//                    Circle()
+//                        .fill(.green.opacity(0.1))
+//                        .frame(width: 50, height: 50)
+//                        .position(x: cell.key.midX, y: cell.key.midY)
 //                }
-//        )
+//            }
+//            .allowsHitTesting(false)
+//        }
+//        .overlay {
+//            
+//            ZStack(alignment: .topLeading) {
+//                ForEach(Array(grid2.enumerated()), id: \.offset) { (_, cell) in
+//                    Circle()
+//                        .fill(.red.opacity(0.1))
+//                        .frame(width: 50, height: 50)
+//                        .position(x: cell.value.midX, y: cell.value.midY)
+//                }
+//            }
+//            .allowsHitTesting(false)
+//        }
+        
+        .onAppear {
+            print(controller.selectedGrid.keys.count)
+        }
     }
 }
 
