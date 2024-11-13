@@ -13,12 +13,19 @@ struct WordSearchView: View {
     
     var body: some View {
         VStack(spacing: 2) {
-            
             HStack {
                 Button("Reveal Word") {
                     controller.revealWord()
                 }
                 .padding(.bottom, 10)
+                
+                Spacer()
+                
+                Text("Progress: \(controller.matrizGenerator.words.filter { $0.wasFound }.count)/\(controller.matrizGenerator.words.count)")
+                    .font(.system(size: 32, weight: .bold))
+                    .padding(.trailing, 16)
+                    .padding(.bottom, 8)
+                    .monospacedDigit()
                 
                 Spacer()
                 
