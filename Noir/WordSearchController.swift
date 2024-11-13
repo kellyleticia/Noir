@@ -86,7 +86,9 @@ class WordSearchController: ObservableObject {
         }
     }
     
-    func confirmChoice() {
+    func confirmChoice() -> Bool {
+        var rightChoice: Bool = false
+        
         let string = String(highlightedWords.map { $0.letter }.joined())
         
         if let index = matrizGenerator.words.firstIndex(where: { $0.name == string }) {
@@ -94,14 +96,17 @@ class WordSearchController: ObservableObject {
             word.wasFound = true
             matrizGenerator.words[index] = word
             gotItRightWord(word: word)
+            rightChoice = true
         } else {
             for (_, position) in highlightedWords {
                 let (row, col) = position
                 grid[row][col].color = .gray
+                rightChoice = false
             }
         }
         
-        highlightedWords.removeAll() 
+        highlightedWords.removeAll()
+        return rightChoice
     }
     
     private func gotItRightWord(word: Word) {

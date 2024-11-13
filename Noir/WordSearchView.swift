@@ -9,15 +9,19 @@ import SwiftUI
 
 struct WordSearchView: View {
     @EnvironmentObject var controller: WordSearchController
+    @State private var choice: Bool?
     
     var body: some View {
         VStack(spacing: 2) {
+            
             HStack {
                 Button("Reveal Word") {
                     controller.revealWord()
                 }
                 .padding(.bottom, 10)
+                
                 Spacer()
+                
                 Button {
                     controller.showHint()
                 } label: {
@@ -58,11 +62,22 @@ struct WordSearchView: View {
                     }
                 }
             }
-            Button("Confirm choice") {
-                controller.confirmChoice()
-                controller.highlightedWords.removeAll()
+            Button {
+                choice = controller.confirmChoice()
+            } label: {
+                Text("Confirm choice")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(
+                        choice == true ? Color.green :
+                        choice == false ? Color.red :
+                        Color.white)
             }
-            .padding(.top, 10)
+            .onChange(of: choice) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                    choice = nil
+                })
+            }
+            .padding(.top)
         }
         .padding()
         .cornerRadius(15)
