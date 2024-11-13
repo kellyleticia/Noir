@@ -11,6 +11,7 @@ class WordSearchController: ObservableObject {
     let matrizGenerator = MatrizGenerator()
     @Published var grid: [[LetterCell]] = []
     @Published var highlightedWords: [(letter: String, position: (Int, Int))] = []
+    @Published var selectedGrid: [CGRect : CGPoint] = [:]
     
     init() {
         matrizGenerator.boardSize = 10

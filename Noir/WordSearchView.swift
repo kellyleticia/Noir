@@ -10,8 +10,6 @@ import SwiftUI
 struct WordSearchView: View {
     @EnvironmentObject var controller: WordSearchController
     
-    @State var grid: [CGRect : CGPoint] = [:]
-    
     var body: some View {
         VStack(spacing: 2) {
             HStack {
@@ -49,20 +47,20 @@ struct WordSearchView: View {
                                     proxy.frame(in: .global)
                                 },
                                 action: { frame in
-                                    grid[frame] = CGPoint(x: row, y: col)
+                                    print("Frame: \(frame)")
+                                    controller.selectedGrid[frame] = CGPoint(x: row, y: col)
                                 }
                             )
-                            .onTapGesture {
-                                let touchedLetter = controller.grid[row][col].letter
-                                controller.grid[row][col].color = .pink
-                                controller.highlightedWords.append((letter: touchedLetter, position: (row, col)))
-                            }
+                        //                            .onTapGesture {
+                        //                                let touchedLetter = controller.grid[row][col].letter
+                        //                                controller.grid[row][col].color = .pink
+                        //                                controller.highlightedWords.append((letter: touchedLetter, position: (row, col)))
+                        //                            }
                     }
                 }
             }
             Button("Confirm choice") {
                 controller.confirmChoice()
-                print(controller.highlightedWords)
                 controller.highlightedWords.removeAll()
             }
             .padding(.top, 10)
@@ -73,9 +71,9 @@ struct WordSearchView: View {
             DragGesture()
                 .onChanged { value in
                     let position = value.location
-                    if let frame = grid.keys.first(where: {
+                    if let frame = controller.selectedGrid.keys.first(where: {
                         $0.contains(position)
-                    }), let point = grid[frame] {
+                    }), let point = controller.selectedGrid[frame] {
                         let row = Int(point.x)
                         let col = Int(point.y)
                         let touchedLetter = controller.grid[row][col].letter
