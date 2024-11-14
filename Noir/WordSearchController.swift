@@ -79,6 +79,8 @@ class WordSearchController: ObservableObject {
             return Color.purple
         case .orange:
             return Color.orange
+        case .pink:
+            return Color.pink
         default:
             return Color.gray
         }
@@ -125,7 +127,7 @@ class WordSearchController: ObservableObject {
     }
     
     private func randomColor() -> Color {
-        let colors: [Color] = [Color.red, Color.blue, Color.green, Color.purple, Color.orange]
+        let colors: [Color] = [Color.red, Color.blue, Color.green, Color.purple, Color.orange, Color.pink]
         return colors.randomElement() ?? .black
     }
 }
